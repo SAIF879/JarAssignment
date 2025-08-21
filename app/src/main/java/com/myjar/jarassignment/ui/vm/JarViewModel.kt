@@ -11,13 +11,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-sealed class UiState{
-    object Loading : UiState()
-    data class Success(val data: List<ComputerItem>) : UiState()
-    data class Error(val message: String) : UiState()
-}
-
-//TODO ADD UI STATE FOR BETTER
 
 class JarViewModel : ViewModel() {
 

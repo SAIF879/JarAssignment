@@ -9,12 +9,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -59,6 +62,10 @@ fun ItemListScreen(
 ) {
     val items = viewModel.listStringData.collectAsState()
 
+    var search by remember {
+        mutableStateOf("")
+    }
+
     if (navigate.value.isNotBlank()) {
         val currRoute = navController.currentDestination?.route.orEmpty()
         if (!currRoute.contains("item_detail")) {
@@ -66,17 +73,32 @@ fun ItemListScreen(
             navigate.value = ""
         }
     }
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
+
+    Column (
+        modifier = Modifier.fillMaxSize().padding(15.dp)
     ) {
-        items(items.value) { item ->
-            ItemCard(
-                item = item,
-                onClick = { onNavigateToDetail(item.id) }
-            )
-            Spacer(modifier = Modifier.height(8.dp))
+        OutlinedTextField(
+            value = search,
+            onValueChange = { search = it },
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text("Search Item") }
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+        ) {
+
+            items(items.value) { item ->
+                if (item.name.contains(search, ignoreCase = true)){
+                    ItemCard(
+                        item = item,
+                        onClick = { onNavigateToDetail(item.id) }
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+            }
         }
     }
 }
