@@ -17,6 +17,8 @@ sealed class UiState{
     data class Error(val message: String) : UiState()
 }
 
+//TODO ADD UI STATE FOR BETTER
+
 class JarViewModel : ViewModel() {
 
     companion object{

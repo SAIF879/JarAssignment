@@ -32,7 +32,7 @@ fun AppNavigation(
     viewModel: JarViewModel,
 ) {
     val navController = rememberNavController()
-    val navigate = remember { mutableStateOf<String>("") }
+    val navigate = remember { mutableStateOf("") }
 
     NavHost(modifier = modifier, navController = navController, startDestination = "item_list") {
         composable("item_list") {
@@ -63,6 +63,7 @@ fun ItemListScreen(
         val currRoute = navController.currentDestination?.route.orEmpty()
         if (!currRoute.contains("item_detail")) {
             navController.navigate("item_detail/${navigate.value}")
+            navigate.value = ""
         }
     }
     LazyColumn(
